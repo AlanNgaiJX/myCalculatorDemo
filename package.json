@@ -1,0 +1,10 @@
+{
+  "name": "chatrooms",
+  "Version": "0.0.1",
+  "description": "Minimalist multiroom chat server",
+  "dependencies": {
+    "mime": "~1.2.7",
+    "socket.io": "^2.1.1",
+    "vue-socket.io": "^2.1.1-b"
+  }
+}

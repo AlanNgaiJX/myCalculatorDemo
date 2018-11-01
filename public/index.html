@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>lab04-2-Calculator</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+	<link rel="stylesheet" type="text/css" href="css/iconfont.css">
+</head>
+<body>
+	<div id="app">
+		<div class="container">
+			<div class="row anima">
+				<div class="frame  col-xs-4 col-xs-offset-4">
+					<!-- 显示屏 -->
+					<div class="row">
+						<div class="showCom">
+							<p v-text="showScreen"></p>
+						</div>
+					</div>
+					<div class="row">
+						<!-- 计算器功能 -->
+						<transition name="fade" mode="in-out">
+							<div class="clickIn-total text-center" v-if="calculatorOptionShow" key="jisuanqigongneng">
+								<div class="row">
+									<div class="col-xs-3 clickIn" data-number="1" @click="configNumber($event)">
+										<span data-number="1">1</span>
+									</div>
+									<div class="col-xs-3 clickIn" @click="configNumber($event)">
+										<span data-number="2">2</span>
+									</div>
+									<div class="col-xs-3 clickIn" @click="configNumber($event)">
+										<span data-number="3">3</span>
+									</div>
+									<div class="col-xs-3 clickIn" @click="option ? configOption($event) : function(){return;}" :class="{optionHadClick : !option}">
+										<span data-option="+">+</span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-3 clickIn" @click="configNumber($event)">
+										<span data-number="4">4</span>
+									</div>
+									<div class="col-xs-3 clickIn" @click="configNumber($event)">
+										<span data-number="5">5</span>
+									</div>
+									<div class="col-xs-3 clickIn" @click="configNumber($event)">
+										<span data-number="6">6</span>
+									</div>
+									<div class="col-xs-3 clickIn" @click="option ? configOption($event) : function(){return;}" :class="{optionHadClick : !option}">
+										<span data-option="-">-</span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-3 clickIn" @click="configNumber($event)">
+										<span data-number="7">7</span>
+									</div>
+									<div class="col-xs-3 clickIn" @click="configNumber($event)">
+										<span data-number="8">8</span>
+									</div>
+									<div class="col-xs-3 clickIn" @click="configNumber($event)">
+										<span data-number="9">9</span>
+									</div>
+									<div class="col-xs-3 clickIn" @click="option ? configOption($event) : function(){return;}" :class="{optionHadClick : !option}">
+										<span data-option="*">*</span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-3 clickIn" @click="equal">
+										<span  data-option="=">=</span>
+									</div>
+									<div class="col-xs-3 clickIn" @click="configNumber($event)">
+										<span data-number="0">0</span>
+									</div>
+									<div class="col-xs-3 clickIn" @click="dot ? configNumber($event) : function(){return;}" :class="{optionHadClick : !dot}">
+										<span data-number=".">·</span>
+									</div>
+									<div class="col-xs-3 clickIn" @click="option ? configOption($event) : function(){return;}" :class="{optionHadClick : !option}">
+										<span data-option="/">/</span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-3 clickIn" @click="areaOption=!areaOption">
+										<span><span class="glyphicon glyphicon-option-horizontal"></span></span>
+									</div>
+									<div class="col-xs-3 clickIn" @click="back">
+										<span my-option="back"><span class="glyphicon glyphicon-arrow-left"></span></span>
+									</div>
+									<div class="col-xs-3 clickIn" @click="clear">
+										<span my-option="C">C</span>
+									</div>
+									<div class="col-xs-3 clickIn" @click="option ? configOption($event) : function(){return;}" :class="{optionHadClick : !option}">
+										<span data-option="**">**</span>
+									</div>
+								</div>
+							</div>
+						</transition>
+						<!-- 梯形模块 -->
+						
+						<div class="shape" v-if="areaOptionShow['ladder']" key="tixingmokuai">
+							<div class="row">
+								<form>
+									<div class="form-group">
+										<div class="row">
+											<label for="a" class="col-xs-2 col-xs-offset-2 control-label">a:</label>
+											<div class="col-xs-6">
+												<input type="text" class="form-control" id="a" placeholder="a in ladder" v-model="shapeNumber.ladder.a" :class="{wrongInput:testShapeForm[0]}">
+											</div>											
+										</div>
+										<div class="row">
+											<label for="b" class="col-xs-2 col-xs-offset-2 control-label">b:</label>
+											<div class="col-xs-6">
+												<input type="text" class="form-control" id="b" placeholder="b in ladder" v-model="shapeNumber.ladder.b" :class="{wrongInput:testShapeForm[1]}">
+											</div>											
+										</div>
+										<div class="row">
+											<label for="h" class="col-xs-2 col-xs-offset-2 control-label">h:</label>
+											<div class="col-xs-6">
+												<input type="text" class="form-control" id="h" placeholder="h in ladder" v-model="shapeNumber.ladder.h" :class="{wrongInput:testShapeForm[2]}">
+											</div>											
+										</div>
+										<div class="row text-center button">
+											<button type="button" class="btn btn-default" @click="result('ladder')">result</button>
+										</div>
+									</div>
+								</form>										
+							</div>
+						</div>
+						
+						<!-- 矩形模块 -->
+						
+						<div class="shape" v-if="areaOptionShow['retangle']" key="juxingmokuai">
+							<div class="row">
+								<form>
+									<div class="form-group">
+										<div class="row">
+											<label for="a" class="col-xs-2 col-xs-offset-2 control-label">a:</label>
+											<div class="col-xs-6">
+												<input type="text" class="form-control" id="a" placeholder="a in retangle" v-model="shapeNumber.retangle.a" :class="{wrongInput:testShapeForm[0]}">
+											</div>											
+										</div>
+										<div class="row">
+											<label for="b" class="col-xs-2 col-xs-offset-2 control-label">b:</label>
+											<div class="col-xs-6">
+												<input type="text" class="form-control" id="b" placeholder="b in retangle" v-model="shapeNumber.retangle.b" :class="{wrongInput:testShapeForm[1]}">
+											</div>											
+										</div>
+										<div class="row text-center button">
+											<button type="button" class="btn btn-default" @click="result('retangle')">result</button>
+										</div>
+									</div>
+								</form>										
+							</div>
+						</div>
+						
+						<!-- 圆形模块 -->
+						
+						<div class="shape" v-if="areaOptionShow['circle']" key="yuanxingmokuai">
+							<div class="row">
+								<form>
+									<div class="form-group">
+										<div class="row">
+											<label for="r" class="col-xs-2 col-xs-offset-2 control-label">R:</label>
+											<div class="col-xs-6">
+												<input type="text" class="form-control" id="r" placeholder="R in circle" v-model="shapeNumber.circle.r" :class="{wrongInput:testShapeForm[0]}">
+											</div>											
+										</div>
+										<div class="row text-center button">
+											<button type="button" class="btn btn-default" @click="result('circle')">result</button>
+										</div>
+									</div>
+								</form>										
+							</div>
+						</div>
+						
+						<!-- 三角形模块 -->
+						
+						<div class="shape" v-if="areaOptionShow['triangle']" key="sanjiaoxingmokuai">
+							<div class="row">
+								<form>
+									<div class="form-group">
+										<div class="row">
+											<label for="a" class="col-xs-2 col-xs-offset-2 control-label">a:</label>
+											<div class="col-xs-6">
+												<input type="text" class="form-control" id="a" placeholder="a in triangle" v-model="shapeNumber.triangle.a" :class="{wrongInput:testShapeForm[0]}">
+											</div>											
+										</div>
+										<div class="row">
+											<label for="h" class="col-xs-2 col-xs-offset-2 control-label">h:</label>
+											<div class="col-xs-6">
+												<input type="text" class="form-control" id="h" placeholder="h in triangle" v-model="shapeNumber.triangle.h" :class="{wrongInput:testShapeForm[1]}">
+											</div>											
+										</div>
+										<div class="row text-center button">
+											<button type="button" class="btn btn-default" @click="result('triangle')">result</button>
+										</div>
+									</div>
+								</form>										
+							</div>
+						</div>
+						
+						<!-- 可折叠图形计算 -->
+						<transition name="slide-fade"  mode="out-in">
+							<div class="areaOption text-center" v-if="areaOption" key="kezhedie">
+								<div class="row" >
+									<div class="col-xs-3 clickIn" @click="configModel('ladder')" my-shape="ladder" :class="{focus:!toggle['ladder']}">
+										<span><span class="icon iconfont icon-t_tixing"></span></span>
+									</div>
+									<div class="col-xs-3 clickIn" @click="configModel('retangle')" my-shape="retangle" :class="{focus:!toggle['retangle']}">
+										<span><span class="icon iconfont icon-xingzhuang-juxing"></span></span>
+									</div>
+									<div class="col-xs-3 clickIn" @click="configModel('circle')" my-shape="circle" :class="{focus:!toggle['circle']}">
+										<span><span class="icon iconfont icon-xingzhuang-tuoyuanxing"></span></span>
+									</div>
+									<div class="col-xs-3 clickIn" @click="configModel('triangle')" my-shape="triangle" :class="{focus:!toggle['triangle']}">
+										<span><span class="icon iconfont icon-xingzhuang-sanjiaoxing"></span></span>
+									</div>
+								</div>							
+							</div>
+						</transition>
+					</div>
+				</div>				
+			</div>
+		</div>	
+	</div>			
+
+
+
+	<script src="/socket.io/socket.io.js" type="text/javascript"></script>
+	<script src="javascript/jquery-3.1.1.js"></script>
+	<!-- <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
+	<script src="css/bootstrap/js/bootstrap.js"></script>
+	<script src="javascript/vue.js"></script>
+	<script src="javascript/myIndex.js"></script>
+</body>
+</html>
