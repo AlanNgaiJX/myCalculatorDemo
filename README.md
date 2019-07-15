@@ -1,4 +1,3 @@
-学习运用node+socketIO做一个小型计算器后台（这样看起来累赘，目的是为了学习node和前后端socket通讯而写的Demo），前端由vue来进行交互和通讯
 <p align='center'>
 <img src='展示1.png' title='images' style='max-width:600px'></img>
 </p>
@@ -14,4 +13,4 @@
 
 
 # myCalculatorDemo
-node+vue+bootstrap做的web计算器
+node+vue+bootstrap 计算器
